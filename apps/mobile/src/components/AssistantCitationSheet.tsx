@@ -89,7 +89,11 @@ export function AssistantCitationSheet(props: {
             label="Go to message"
             onPress={() => {
               close();
-              requestThreadMessageJump(scopedThreadKey(citation), citation.messageId);
+              requestThreadMessageJump(
+                scopedThreadKey(citation),
+                citation.messageId,
+                citation.text,
+              );
               openLinkedThread(citation);
             }}
           />

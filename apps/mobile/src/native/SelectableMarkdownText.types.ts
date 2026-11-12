@@ -1,6 +1,7 @@
 export interface NativeMarkdownTextStyle {
   readonly selectionColor?: string;
   readonly selectionHandleColor?: string;
+  readonly highlightColor?: string;
   readonly color: string;
   readonly strongColor: string;
   readonly mutedColor: string;
@@ -78,6 +79,8 @@ export interface SelectableMarkdownTextProps {
   readonly preserveSoftBreaks?: boolean;
   readonly onLinkPress?: (href: string) => void;
   readonly onCiteText?: (text: string) => void;
+  /** Quoted text to highlight, such as a citation's source after "Go to message". */
+  readonly highlightText?: string | undefined;
   readonly fileContextMenu?: (href: string) => MarkdownFileContextMenu | undefined;
   readonly onFileContextMenuAction?: (href: string, actionId: string) => void;
   readonly linkCustomization?: (href: string) => MarkdownLinkCustomization | undefined;

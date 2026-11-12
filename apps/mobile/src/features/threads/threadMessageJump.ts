@@ -8,6 +8,7 @@ const PENDING_JUMP_MS = 30_000;
 let pending: {
   readonly threadKey: string;
   readonly messageId: MessageId;
+  readonly quote: string | null;
   readonly at: number;
 } | null = null;
 const listeners = new Set<() => void>();
@@ -16,8 +17,12 @@ function notify() {
   for (const listener of listeners) listener();
 }
 
-export function requestThreadMessageJump(threadKey: string, messageId: MessageId): void {
-  pending = { threadKey, messageId, at: Date.now() };
+export function requestThreadMessageJump(
+  threadKey: string,
+  messageId: MessageId,
+  quote: string | null = null,
+): void {
+  pending = { threadKey, messageId, quote, at: Date.now() };
   notify();
 }
 
@@ -26,6 +31,11 @@ export function pendingThreadMessageJump(threadKey: string): MessageId | null {
   return pending?.threadKey === threadKey && Date.now() - pending.at < PENDING_JUMP_MS
     ? pending.messageId
     : null;
+}
+
+/** The quoted text to highlight once the pending jump lands, if a citation asked for one. */
+export function pendingThreadMessageJumpQuote(threadKey: string): string | null {
+  return pendingThreadMessageJump(threadKey) === null ? null : (pending?.quote ?? null);
 }
 
 export function finishThreadMessageJump(threadKey: string): void {
